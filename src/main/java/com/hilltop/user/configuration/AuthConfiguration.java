@@ -1,4 +1,4 @@
-package com.hilltop.user.config;
+package com.hilltop.user.configuration;
 
 import com.hilltop.user.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -14,18 +14,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * Auth configuration
- */
 @Configuration
 @EnableWebSecurity
 public class AuthConfiguration {
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/api/v1/user", "/api/v1/user/login", "/api/v1/user/validate-token").permitAll()
+                .antMatchers("/api/v1/auth", "/api/v1/auth/sign-in", "/api/v1/auth/validate-token").permitAll()
                 .and()
                 .build();
     }

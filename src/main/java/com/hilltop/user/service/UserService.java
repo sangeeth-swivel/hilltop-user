@@ -11,24 +11,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-/**
- * User service
- */
 @Service
 @Slf4j
 public class UserService {
-
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    /**
-     * This method is used to add user.
-     *
-     * @param userRequestDto userRequestDto
-     */
     public void addUser(UserRequestDto userRequestDto) {
         try {
             checkMobileNoExist(userRequestDto.getMobileNo());
@@ -39,11 +30,6 @@ public class UserService {
         }
     }
 
-    /**
-     * This method is used to validate if a user already exist with same mobileNo.
-     *
-     * @param mobileNo mobileNo
-     */
     public void checkMobileNoExist(String mobileNo) {
         try {
             Optional<User> optionalUser = userRepository.findByMobileNo(mobileNo);

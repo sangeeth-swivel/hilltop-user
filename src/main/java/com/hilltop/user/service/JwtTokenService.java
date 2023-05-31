@@ -13,21 +13,11 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * Jwt token service
- */
 @Service
 public class JwtTokenService {
-
     @Value("${token.key}")
     public String tokenKey;
 
-    /**
-     * This method is used to validate jwt token.
-     *
-     * @param token jwt token
-     */
     public void validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
@@ -36,12 +26,6 @@ public class JwtTokenService {
         }
     }
 
-    /**
-     * This method is used to generate jwt token.
-     *
-     * @param mobileNo mobileNo
-     * @return jwt token
-     */
     public String generateToken(String mobileNo) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
@@ -52,14 +36,8 @@ public class JwtTokenService {
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
-    /**
-     * This method is used to create key to encrypt & decrypt jwt token.
-     *
-     * @return key
-     */
     private Key getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(tokenKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
 }

@@ -9,10 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.UUID;
-
-/**
- * User entity
- */
 @Entity
 @Table
 @Getter

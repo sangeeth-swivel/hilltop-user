@@ -1,4 +1,4 @@
-package com.hilltop.user.config;
+package com.hilltop.user.configuration;
 
 import com.hilltop.user.domain.entity.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,11 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-/**
- * Custom user details
- */
 public class CustomUserDetails implements UserDetails {
-
     private final String userName;
     private final String password;
 
