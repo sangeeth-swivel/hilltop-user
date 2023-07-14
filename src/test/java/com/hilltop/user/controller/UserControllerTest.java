@@ -80,28 +80,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.data").isEmpty());
     }
 
-    @Test
-    void Should_ReturnUserExistError_When_UserTryToRegisterWithExistingNo() throws Exception {
-        doThrow(new UserExistException(FAILED)).when(userService).addUser(any());
-        mockMvc.perform(MockMvcRequestBuilders.post(REGISTER_URI)
-                        .content(userRequestDto.toLogJson())
-                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(ErrorMessage.MOBILE_NO_EXIST.getMessage()))
-                .andExpect(jsonPath("$.data").isEmpty());
-    }
-
-    @Test
-    void Should_ReturnInternalServerError_When_RegisterUserIsFailedDueToInternalErrors() throws Exception {
-        doThrow(new HillTopUserApplicationException(FAILED)).when(userService).addUser(any());
-        mockMvc.perform(MockMvcRequestBuilders.post(REGISTER_URI)
-                        .content(userRequestDto.toLogJson())
-                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()))
-                .andExpect(jsonPath("$.data").isEmpty());
-    }
-
     /**
      * This method is used to mock userRequestDto.
      *

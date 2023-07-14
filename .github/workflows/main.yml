@@ -100,8 +100,8 @@ jobs:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           use_existing_version_if_available: true
-          application_name: user
-          environment_name: User-env
+          application_name: hilltop-user-service
+          environment_name: Hilltop-user-service-env
           version_label: ${{github.SHA}}
           region: us-east-1
           deployment_package: user-0.0.1-SNAPSHOT.jar

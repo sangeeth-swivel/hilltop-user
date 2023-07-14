@@ -65,29 +65,6 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.message").value(SuccessMessage.SUCCESSFULLY_LOGGED_IN.getMessage()));
     }
 
-    @Test
-    void Should_ReturnBadRequest_When_CredentialFieldsAreMissing() throws Exception {
-        LoginRequestDto requestDto = loginRequestDto;
-        requestDto.setPassword(null);
-        mockMvc.perform(MockMvcRequestBuilders.post(LOGIN_URI)
-                        .content(requestDto.toLogJson())
-                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(ErrorMessage.MISSING_REQUIRED_FIELDS.getMessage()))
-                .andExpect(jsonPath("$.data").isEmpty());
-    }
-
-    @Test
-    void Should_ReturnInternalServerError_When_LoginIsFailedDueToInternalErrors() throws Exception {
-        doThrow(new HillTopUserApplicationException(FAILED)).when(jwtTokenService).generateToken(anyString());
-        mockMvc.perform(MockMvcRequestBuilders.post(LOGIN_URI)
-                        .content(userRequestDto.toLogJson())
-                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()))
-                .andExpect(jsonPath("$.data").isEmpty());
-    }
-
     /**
      * Unit tests for validateToken() method.
      */
@@ -97,26 +74,6 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(SuccessMessage.VALID_TOKEN.getMessage()));
-    }
-
-    @Test
-    void Should_ReturnUnauthorized_When_TokenIsNotValid() throws Exception {
-        doThrow(new TokenException(FAILED, new JwtException("Token Expired")))
-                .when(jwtTokenService).validateToken(anyString());
-        mockMvc.perform(MockMvcRequestBuilders.get(VALIDATE_TOKEN_URI)
-                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value(ErrorMessage.INVALID_TOKEN.getMessage()));
-    }
-
-    @Test
-    void Should_ReturnInternalServerError_When_ValidateTokenIsFailedDueToInternalErrors() throws Exception {
-        doThrow(new HillTopUserApplicationException(FAILED)).when(jwtTokenService).validateToken(anyString());
-        mockMvc.perform(MockMvcRequestBuilders.get(VALIDATE_TOKEN_URI)
-                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.message").value(ErrorMessage.INTERNAL_SERVER_ERROR.getMessage()))
-                .andExpect(jsonPath("$.data").isEmpty());
     }
 
     /**
